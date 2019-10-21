@@ -1,0 +1,64 @@
+﻿@model TrainBlog.Models.EmailModel
+
+<section class="section">
+    <div class="container">
+
+        <div class="row justify-content-center">
+                <!-- Content-->
+                <div class="col-8">
+
+                    <!-- Post-->
+					<article class="post">
+						<h5 class="text-center mt-0 mb-5 pb-3 text-uppercase"><b>Get In Touch</b></h5>
+
+						<p class="text-center">Use the form below to send me an email with any questions or comments you may have.</p>
+						
+						@using (Html.BeginForm(new { @class = "mt-4" }))
+						{
+							@Html.AntiForgeryToken()
+
+							@Html.ValidationSummary("", new { @class = "text-danger" })
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										@Html.TextBoxFor(m => m.FromName, new { @class = "form-control", placeholder = "Name" })
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										@Html.TextBoxFor(m => m.FromEmail, new { @class = "form-control", placeholder = "Email" })
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group">
+										@Html.TextBoxFor(m => m.Subject, new { @class = "form-control", placeholder = "Subject" })
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group">
+										@Html.TextAreaFor(m => m.Body, new { @class = "form-control", placeholder = "Your Message", rows = 7 })
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="form-group text-right">
+										<input type="submit" class="btn btn-dark" value="Send" />
+									</div>
+								</div>
+							</div>
+						}
+					</article>
+                    <!-- Post end-->
+                            
+                </div>
+                <!-- Content end-->
+                        
+            </div>
+
+    </div> <!-- end container -->
+</section>

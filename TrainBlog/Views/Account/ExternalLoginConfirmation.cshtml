@@ -1,0 +1,36 @@
+﻿@model TrainBlog.Models.ExternalLoginConfirmationViewModel
+
+<section class="section">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-8">
+				<article class="post">
+					@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+					{
+						@Html.AntiForgeryToken()
+
+						<h5 class="text-center mt-0 mb-5 pb-3 text-uppercase"><b>Association Form</b></h5>
+						
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+						<p class="text-center">
+							You have successfully authenticated with your <strong>@ViewBag.LoginProvider</strong> account.
+							Please enter an email address for this site below and click the Register button to finish
+							logging in.
+						</p>
+						<div class="form-group">
+							<div class="col-12">
+								@Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+								@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-12 text-right">
+								<input type="submit" class="btn btn-dark" value="Register" />
+							</div>
+						</div>
+					}
+				</article>
+			</div>
+		</div>
+	</div>
+</section>
