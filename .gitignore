@@ -347,3 +347,13 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+TrainBlog/App_Start/BundleConfig.cs
+TrainBlog/App_Start/FilterConfig.cs
+TrainBlog/App_Start/IdentityConfig.cs
+TrainBlog/App_Start/RouteConfig.cs
+TrainBlog/App_Start/Startup.Auth.cs
+TrainBlog/Migrations/Configuration.cs
+TrainBlog/Views/Web.config
+TrainBlog/Web.config
+TrainBlog/Web.Debug.config
+TrainBlog/Web.Release.config
