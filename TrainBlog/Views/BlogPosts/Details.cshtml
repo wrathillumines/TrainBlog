@@ -1,42 +1,211 @@
 ﻿@model TrainBlog.Models.BlogPost
+@using Microsoft.AspNet.Identity
 
-@{
-    ViewBag.Title = "Details";
-}
+<section class="section">
+	<div class="container">
 
-<h2>Details</h2>
+		<div class="row">
+			<!-- Content-->
+			<div class="col-lg-8">
 
-<div>
-    <h4>BlogPost</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+				<!-- Post-->
+				<article class="post">
+					<div class="text-center post-header">
+						<h2 class="post-title">@Html.DisplayFor(m => m.Title)</h2>
+						<p class="post-date">@Html.DisplayFor(m => m.Created)</p>
+						@if (Model.Updated != null)
+						{
+							<p class="post-date"><i>Updated @Html.DisplayFor(m => m.Updated)</i></p>
+						}
+					</div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
+					<div class="post-preview text-center">
+						@if (Model.MediaUrl != "")
+						{
+							<img src="@Model.MediaUrl" alt="" class="img-fluid rounded" />
+						}
+					</div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
+					<div class="blog-detail-description">
+						<p>@Html.DisplayFor(m => m.Body)</p>
 
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
+						@if (User.IsInRole("King"))
+						{
+							<hr />
+							<p>
+								Manage Post:
+							</p>
+							<p>
+								@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) | @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+							</p>
+						}
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
+						<hr />
 
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
+						<div class="mt-5">
+							@if (Model.Comments.FirstOrDefault() != null)
+							{
+								<h5 class="page-title-alt"><span>Comments</span></h5>
+							}
+							else
+							{
+								<h5 class="page-title-alt"><span>No Comments Yet</span></h5>
+							}
+						</div>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+						@foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+						{
+							<ul class="media-list list-unstyled">
+								<li class="media">
+									@if (comment.Author.AvatarUrl != null)
+									{
+										<img class="d-flex mr-3 rounded-circle" src="@comment.Author.AvatarUrl" alt="Comment Author" />
+									}
+									else
+									{
+										<img class="d-flex mr-3 rounded-circle" src="~/Avatars/nophoto.png" alt="No Profile Photo" />
+									}
+									<div class="media-body">
+										@*<a href="#" class="text-custom reply-btn"><i class="mdi mdi-reply"></i>&nbsp; Reply</a>*@
+										<h4 class="media-heading"><a href="">@comment.Author.DisplayName</a></h4>
+										<p class="text-muted post-date">@comment.Created.ToString("MMMM d, yy h:mm tt")</p>
+										<p>@comment.Body</p>
+										@if (User.IsInRole("King") || User.Identity.GetUserId() == comment.AuthorId)
+										{
+											<div class="row">
+												<div class="col-sm-1 text-center">
+													@using (Html.BeginForm("Edit", "Comments", FormMethod.Get))
+													{
+														@Html.Hidden("Created", comment.Created)
+														@Html.Hidden("AuthorId", comment.AuthorId)
+														@Html.Hidden("Id", comment.Id)
+														@Html.Hidden("slug", Model.Slug)
+														<button type="submit" class="btn btn-dark">Edit</button>
+													}
+												</div>
+												<div class="col-sm-1 text-center">
+													@using (Html.BeginForm("Delete", "Comments", FormMethod.Post))
+													{
+														@Html.Hidden("Id", comment.Id)
+														@Html.Hidden("slug", Model.Slug)
+														@Html.AntiForgeryToken()
+														<button type="submit" class="btn btn-dark">Delete</button>
+													}
+												</div>
+											</div>
+										}
+									</div>
+								</li>
+							</ul>
+						}
+
+						<div class="mt-5">
+							@if (User.Identity.IsAuthenticated)
+							{
+								<h5 class="page-title-alt"><span>Say Something</span></h5>
+							}
+							else
+							{
+								<h5 class="page-title-alt"><span>Log in to leave a comment</span></h5>
+							}
+						</div>
+						@if (User.Identity.IsAuthenticated)
+						{
+							using (Html.BeginForm("Create", "Comments", FormMethod.Post, new { @class = "mt-4" }))
+							{
+								@Html.AntiForgeryToken()
+								@Html.ValidationSummary("", new { @class = "text-danger" })
+								@Html.Hidden("slug", Model.Slug)
+								@Html.Hidden("BlogPostId", Model.Id)
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group">
+											@Html.TextArea("CommentBody", new { @class = "form-control", rows = 5, placeholder = "Your Message", name = "comment"})
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<button name="submit" type="submit" id="submit" class="btn btn-dark">Post Comment</button>
+										</div>
+									</div>
+								</div>
+							}
+						}
+					</div>
+				</article>
+				<!-- Post end-->
+
+
+
+			</div>
+			<!-- Content end-->
+			<!-- Sidebar-->
+			<div class="col-lg-4">
+				<div class="sidebar">
+
+					<aside class="widget widget_search">
+						<form>
+							<input class="form-control" type="search" placeholder="Search...">
+							<button class="search-button" type="submit"><span class="mdi mdi-magnify"></span></button>
+						</form>
+					</aside>
+
+					<!-- About widget-->
+					<aside class="widget">
+						<div class="widget-title">About Me</div>
+
+						<div class="about-widget">
+							<img src="~/Images/aboutmehead.jpg" alt="About Me" class="rounded-circle">
+
+							<p>Quis vero phasellus hac nullam, in quam vitae duis adipiscing mauris leo, laoreet eget at quis, ante vestibulum vivamus vel. Sapien lobortis, eget orci purus amet pede, consectetur neque risus.</p>
+
+							<a href="@Url.Action("About", "Home")" class="btn-read-more mt-2">Read More <i class="mdi mdi-arrow-right"></i></a>
+						</div>
+					</aside>
+
+
+					<!-- Social widget-->
+					<aside class="widget">
+						<div class="widget-title">Subscribe & Follow</div>
+
+						<ul class="socials">
+							<li><a href="http://facebook.com/wrathillumines"><i class="mdi mdi-facebook"></i></a></li>
+							<li><a href="http://twitter.com/DHunterW"><i class="mdi mdi-twitter"></i></a></li>
+							<li><a href="http://instagram.com/wrathillumines"><i class="mdi mdi-instagram"></i></a></li>
+						</ul>
+					</aside>
+
+					<!-- Recent entries widget-->
+					<aside class="widget widget_recent_entries_custom">
+						<div class="widget-title">Recent Posts</div>
+						<ul>
+							<li class="clearfix">
+								<div class="wi"><a href="#"><img src="images/blog/blog-1.jpg" alt="" class="img-fluid"></a></div>
+								<div class="wb"><a href="#">Beautiful Day With Friends..</a> <span class="post-date">Jun 15, 2017</span></div>
+							</li>
+							<li class="clearfix">
+								<div class="wi"><a href="#"><img src="images/blog/blog-2.jpg" alt="" class="img-fluid"></a></div>
+								<div class="wb"><a href="#">Nature valley with cooling..</a> <span class="post-date">Jun 10, 2017</span></div>
+							</li>
+							<li class="clearfix">
+								<div class="wi"><a href="#"><img src="images/blog/blog-3.jpg" alt="" class="img-fluid"></a></div>
+								<div class="wb"><a href="#">15 Best Healthy and Easy Salad..</a> <span class="post-date">Jun 8, 2017</span></div>
+							</li>
+						</ul>
+					</aside>
+
+					<!-- Text widget-->
+					@*<aside class="widget">
+						<div class="widget-title">Text Widget</div>
+
+						<p class="text-muted text-widget-des">Exercitation photo booth stumptown tote bag Banksy, elit small batch freegan sed. Craft beer elit seitan exercitation, photo booth et 8-bit kale chips proident chillwave deep v laborum. Aliquip veniam delectus, Marfa eiusmod Pinterest in do umami readymade swag. </p>
+					</aside>*@
+				</div>
+			</div>
+			<!-- Sidebar end-->
+		</div>
+
+	</div> <!-- end container -->
+</section>

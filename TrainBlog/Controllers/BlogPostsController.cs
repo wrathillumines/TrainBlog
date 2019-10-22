@@ -106,12 +106,9 @@ namespace TrainBlog.Controllers
                 if (ImageUploadHelper.IsWebFriendlyImage(image))
                 {
                     var ext = Path.GetExtension(image.FileName);
-                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), ext));
-                    blogPost.MediaUrl = "/Uploads/" + Guid.NewGuid() + ext;
-
-                    //var fileName = Path.GetFileName(image.FileName);
-                    //image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
-                    //blogPost.MediaUrl = "/Uploads/" + fileName;
+                    var fileName = Guid.NewGuid() + ext;
+                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    blogPost.MediaUrl = "/Uploads/" + fileName;
                 }
 
                 blogPost.Slug = Slug;
@@ -143,15 +140,23 @@ namespace TrainBlog.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Abstract,Slug,Body,MediaUrl,Published,Created,Updated")] BlogPost blogPost)
+        public ActionResult Edit([Bind(Include = "Id,Title,Abstract,Slug,Body,MediaUrl,Created,Updated")] BlogPost blogPost, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
+                if (ImageUploadHelper.IsWebFriendlyImage(image))
+                {
+                    var ext = Path.GetExtension(image.FileName);
+                    var fileName = Guid.NewGuid() + ext;
+                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    blogPost.MediaUrl = "/Uploads/" + fileName;
+                }
                 db.Entry(blogPost).State = EntityState.Modified;
+                blogPost.Updated = DateTimeOffset.Now;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
-            return View(blogPost);
+            return View("Index", "Home");
         }
 
         // GET: BlogPosts/Delete/5

@@ -168,8 +168,9 @@ namespace TrainBlog.Controllers
                 if (ImageUploadHelper.IsWebFriendlyImage(model.Avatar))
                 {
                     var ext = Path.GetExtension(model.Avatar.FileName);
-                    model.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), ext));
-                    user.AvatarUrl = "/Avatars/" + Guid.NewGuid() + ext;
+                    var fileName = Guid.NewGuid() + ext;
+                    model.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
+                    user.AvatarUrl = "/Avatars/" + fileName;
                 };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
