@@ -17,7 +17,7 @@ namespace TrainBlog.Controllers
         // GET: Index
         public ActionResult Index(int? page)
         {
-            int pageSize = 3;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(db.BlogPosts.OrderByDescending(b => b.Created).ToPagedList(pageNumber, pageSize));
         }
@@ -57,7 +57,7 @@ namespace TrainBlog.Controllers
 
                     var email = new MailMessage(from, WebConfigurationManager.AppSettings["emailto"])
                     {
-                        Subject = $"Portfolio Site Message From {model.FromName} - {model.Subject}",
+                        Subject = $"Railfan Site Message From {model.FromName} - {model.Subject}",
                         Body = model.Body,
                         IsBodyHtml = true
                     };
@@ -74,6 +74,13 @@ namespace TrainBlog.Controllers
                 }
             }
             return View(model);
+        }
+
+        //
+        // GET: Email Sent
+        public ActionResult Sent()
+        {
+            return View();
         }
     }
 }

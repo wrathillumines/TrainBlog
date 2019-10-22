@@ -53,9 +53,12 @@ namespace TrainBlog.Controllers
         }
 
         // GET: Photo Gallery
-        public ActionResult Gallery()
+        public ActionResult Gallery(int? page)
         {
-            return View();
+            int pageSize = 9;
+            int pageNumber = (page ?? 1);
+
+            return View(db.BlogPosts.Where(b => b.MediaUrl != null).OrderByDescending(b => b.Created).ToPagedList(pageNumber, pageSize));
         }
 
         // GET: BlogPosts/Details/5

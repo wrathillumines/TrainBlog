@@ -12,3 +12,8 @@
 .custombtn {
     width: 180px !important;
 }
+
+.custom-img-fluid {
+    max-width: 100%;
+    height: auto;
+}

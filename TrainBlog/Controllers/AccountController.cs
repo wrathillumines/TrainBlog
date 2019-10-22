@@ -433,6 +433,13 @@ namespace TrainBlog.Controllers
             return View();
         }
 
+        //
+        // GET: EmailConfirmationSent
+        public ActionResult EmailConfirmationSent()
+        {
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

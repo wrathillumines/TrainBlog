@@ -69,6 +69,10 @@
 										@*<a href="#" class="text-custom reply-btn"><i class="mdi mdi-reply"></i>&nbsp; Reply</a>*@
 										<h4 class="media-heading"><a href="">@comment.Author.DisplayName</a></h4>
 										<p class="text-muted post-date">@comment.Created.ToString("MMMM d, yy h:mm tt")</p>
+											@if (comment.Updated != null)
+											{
+												<p>Edited @comment.Updated.Value.ToString("MMMM d, yy h:mm tt")</p>
+											}
 										<p>@comment.Body</p>
 										@if (User.IsInRole("King") || User.Identity.GetUserId() == comment.AuthorId)
 										{

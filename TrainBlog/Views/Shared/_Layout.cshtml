@@ -198,6 +198,19 @@
 	<script src="~/Scripts/jquery.app.js"></script>
 
 	<script>
+		//
+		// Modal
+		//
+		$(function() {
+			$('gallery').on('click', function() {
+				$('.imagePreview').attr('src', $(this).find('img').attr('src'));
+				$('imageModal').modal('show');
+			});
+		});
+
+		//
+		//External logins
+		//
 		window.fbAsyncInit = function () {
 			FB.init({
 				appId: '{your-app-id}',
