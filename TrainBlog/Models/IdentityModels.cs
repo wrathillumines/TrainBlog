@@ -16,9 +16,11 @@ namespace TrainBlog.Models
         public string AvatarUrl { get; set; }
         public bool Subscribed { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Carousel> Carousels { get; set; }
         public ApplicationUser()
         {
             Comments = new HashSet<Comment>();
+            Carousels = new HashSet<Carousel>();
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -45,5 +47,6 @@ namespace TrainBlog.Models
         public DbSet<BlogPost> BlogPosts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Carousel> Carousels { get; set; }
     }
 }

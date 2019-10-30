@@ -1,11 +1,14 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using TrainBlog.Helpers;
 using TrainBlog.Models;
 
 namespace TrainBlog.Controllers
@@ -15,6 +18,7 @@ namespace TrainBlog.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -48,6 +52,90 @@ namespace TrainBlog.Controllers
             {
                 _userManager = value;
             }
+        }
+
+        // GET: Edit Profile
+        [Authorize]
+        public ActionResult EditProfile()
+        {
+            var userId = User.Identity.GetUserId();
+            var member = db.Users.Select(user => new UserProfileViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                AvatarUrl = user.AvatarUrl,
+            }).FirstOrDefault(u => u.Id == userId);
+
+            return View(member);
+        }
+
+        //POST: Edit Profile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProfile(UserProfileViewModel model)
+        {
+            var user = db.Users.Find(model.Id);
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.DisplayName = model.DisplayName;
+            user.Email = model.Email;
+            user.UserName = model.Email;
+
+            if (ImageUploadHelper.IsWebFriendlyImage(model.Avatar))
+            {
+                var ext = Path.GetExtension(model.Avatar.FileName);
+                var fileName = Guid.NewGuid() + ext;
+                model.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
+                user.AvatarUrl = "/Avatars/" + fileName;
+            };
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        // GET: New Facebook User
+        public ActionResult NewUser()
+        {
+            var userId = User.Identity.GetUserId();
+            var member = db.Users.Select(user => new UserProfileViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                AvatarUrl = user.AvatarUrl,
+            }).FirstOrDefault(u => u.Id == userId);
+
+            return View(member);
+        }
+
+        //POST: Edit Profile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewUser(UserProfileViewModel model)
+        {
+            var user = db.Users.Find(model.Id);
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.DisplayName = model.DisplayName;
+            user.Email = model.Email;
+            user.UserName = model.Email;
+            user.AvatarUrl = WebConfigurationManager.AppSettings["DefaultAvatar"];
+
+            if (ImageUploadHelper.IsWebFriendlyImage(model.Avatar))
+            {
+                var ext = Path.GetExtension(model.Avatar.FileName);
+                var fileName = Guid.NewGuid() + ext;
+                model.Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
+                user.AvatarUrl = "/Avatars/" + fileName;
+            };
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
 
         //

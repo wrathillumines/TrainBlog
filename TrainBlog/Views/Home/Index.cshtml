@@ -3,35 +3,13 @@
 
 @model IPagedList<TrainBlog.Models.BlogPost>
 
-<section>
-	<div class="main-slider basic-slider">
-		<div class="main-slide">
-			<img src="~/Images/Carousel/_DHW0045.jpg" />
-		</div>
-		<div class="main-slide">
-			<img src="~/Images/Carousel/_DHW0044.jpg" />
-		</div>
-		<div class="main-slide">
-			<img src="~/Images/Carousel/_DHW0043.jpg" />
-		</div>
-		<div class="main-slide">
-			<img src="~/Images/Carousel/_DHW0027.jpg" />
-		</div>
-		<div class="main-slide">
-			<img src="~/Images/Carousel/_DHW0081.jpg" />
-		</div>
-		<div class="main-slide">
-			<img src="~/Images/Carousel/_DHW0065.jpg" />
-		</div>
-	</div><!-- Slider -->
-</section>
-
+@Html.Partial("CarouselPartial", new List<TrainBlog.Models.Carousel>())
 
 <section class="section">
-    <div class="container">
+	<div class="container">
 
-        <div class="row">
-                <!-- Content-->
+		<div class="row">
+			<!-- Content-->
 			<div class="col-lg-8">
 
 				<!-- Post-->
@@ -64,63 +42,61 @@
 				</center>
 				<!-- Pagination end-->
 			</div>
-                <!-- Content end-->
+			<!-- Content end-->
+			<!-- Sidebar-->
+			<div class="col-lg-4">
+				<div class="sidebar">
+
+					<!-- About widget-->
+					<aside class="widget">
+						<div class="widget-title">About Me</div>
+
+						<div class="about-widget">
+							<img src="~/Images/aboutmehead.jpg" alt="About Me" class="rounded-circle">
+
+							<p>I'm just a millenial railfan exploring the country with my camera.</p>
+
+							<a href="#" class="btn-read-more mt-2">Read More <i class="mdi mdi-arrow-right"></i></a>
+						</div>
+					</aside>
 
 
-                <!-- Sidebar-->
-                <div class="col-lg-4">
-                    <div class="sidebar">
+					<!-- Social widget-->
+					<aside class="widget">
+						<div class="widget-title">Subscribe & Follow</div>
 
-                        <!-- About widget-->
-                        <aside class="widget">
-                            <div class="widget-title">About Me</div>
+						<ul class="socials">
+							<li><a href="http://facebook.com/wrathillumines"><i class="mdi mdi-facebook"></i></a></li>
+							<li><a href="http://twitter.com/DHunterW"><i class="mdi mdi-twitter"></i></a></li>
+							<li><a href="http://instagram.com/wrathillumines"><i class="mdi mdi-instagram"></i></a></li>
+						</ul>
+					</aside>
 
-                            <div class="about-widget">
-                                <img src="~/Images/aboutmehead.jpg" alt="About Me" class="rounded-circle">
+					<!-- Text widget-->
+					@*<aside class="widget">
+							<div class="widget-title">Text Widget</div>
 
-                                <p>I'm just a millenial railfan exploring the country with my camera.</p>
+							<p class="text-muted text-widget-des">Exercitation photo booth stumptown tote bag Banksy, elit small batch freegan sed. Craft beer elit seitan exercitation, photo booth et 8-bit kale chips proident chillwave deep v laborum. Aliquip veniam delectus, Marfa eiusmod Pinterest in do umami readymade swag. </p>
 
-                                <a href="#" class="btn-read-more mt-2">Read More <i class="mdi mdi-arrow-right"></i></a>
-                            </div>
-                        </aside>
+						</aside>*@
 
+					<!-- Archives widget-->
+					@*<aside class="widget widget_archive">
+							<div class="widget-title">Archives</div>
 
-                        <!-- Social widget-->
-                        <aside class="widget">
-                            <div class="widget-title">Subscribe & Follow</div>
-
-							<ul class="socials">
-								<li><a href="http://facebook.com/wrathillumines"><i class="mdi mdi-facebook"></i></a></li>
-								<li><a href="http://twitter.com/DHunterW"><i class="mdi mdi-twitter"></i></a></li>
-								<li><a href="http://instagram.com/wrathillumines"><i class="mdi mdi-instagram"></i></a></li>
+							<ul>
+								<li><a href="#">March 2017</a> <span class="float-right">(32)</span></li>
+								<li><a href="#">April 2017</a> <span class="float-right">(09)</span></li>
+								<li><a href="#">May 2017</a> <span class="float-right">(81)</span></li>
+								<li><a href="#">Jun 2017</a> <span class="float-right">(12)</span></li>
 							</ul>
-                        </aside>
 
-                        <!-- Text widget-->
-                        @*<aside class="widget">
-                            <div class="widget-title">Text Widget</div>
+						</aside>*@
 
-                            <p class="text-muted text-widget-des">Exercitation photo booth stumptown tote bag Banksy, elit small batch freegan sed. Craft beer elit seitan exercitation, photo booth et 8-bit kale chips proident chillwave deep v laborum. Aliquip veniam delectus, Marfa eiusmod Pinterest in do umami readymade swag. </p>
+				</div>
+			</div>
+			<!-- Sidebar end-->
+		</div>
 
-                        </aside>*@
-
-                        <!-- Archives widget-->
-                        @*<aside class="widget widget_archive">
-                            <div class="widget-title">Archives</div>
-
-                            <ul>
-                                <li><a href="#">March 2017</a> <span class="float-right">(32)</span></li>
-                                <li><a href="#">April 2017</a> <span class="float-right">(09)</span></li>
-                                <li><a href="#">May 2017</a> <span class="float-right">(81)</span></li>
-                                <li><a href="#">Jun 2017</a> <span class="float-right">(12)</span></li>
-                            </ul>
-
-                        </aside>*@
-
-                    </div>
-                </div>
-                <!-- Sidebar end-->
-            </div>
-
-    </div> <!-- end container -->
+	</div> <!-- end container -->
 </section>

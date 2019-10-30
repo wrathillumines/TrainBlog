@@ -1,69 +1,50 @@
 ﻿@model TrainBlog.Models.Comment
 
-@{
-    ViewBag.Title = "Edit";
-}
+<section class="section">
+	<div class="container">
 
-<h2>Edit</h2>
+		<div class="row justify-content-center">
+			<!-- Content-->
+			<div class="col-8">
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Comment</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+				<!-- Post-->
+				<article class="post">
+					<h5 class="text-center mt-0 mb-5 pb-3 text-uppercase"><b>Create New Post</b></h5>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.BlogPostId, "BlogPostId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("BlogPostId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BlogPostId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+					@using (Html.BeginForm("Edit", "Comments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+					{
+						@Html.AntiForgeryToken()
+						@Html.ValidationSummary("", new { @class = "text-danger" })
+						@Html.HiddenFor(m => m.Id)
+						@Html.HiddenFor(m => m.AuthorId)
+						@Html.HiddenFor(m => m.BlogPostId)
+						@Html.HiddenFor(m => m.BlogPost.Slug)
+						@Html.HiddenFor(m => m.Created)
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									@Html.EditorFor(m => m.Body, new { htmlAttributes = new { @class = "form-control" } })
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								@Html.ActionLink("Cancel", "Details", "BlogPosts", new { slug = Model.BlogPost.Slug }, new { @class = "btn btn-dark" })
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group text-right">
+									<input type="submit" class="btn btn-dark" value="Save Changes" />
+								</div>
+							</div>
+						</div>
+					}
+				</article>
+				<!-- Post end-->
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.AuthorId, "AuthorId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("AuthorId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.AuthorId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+			</div>
+			<!-- Content end-->
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Body, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
-            </div>
-        </div>
+		</div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Created, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Created, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Created, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Updated, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Updated, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Updated, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+	</div> <!-- end container -->
+</section>

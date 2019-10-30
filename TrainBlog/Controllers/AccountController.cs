@@ -386,7 +386,7 @@ namespace TrainBlog.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Manage");
+                return RedirectToAction("Index", "Home");
             }
 
             if (ModelState.IsValid)
@@ -405,7 +405,8 @@ namespace TrainBlog.Controllers
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
+                        //return RedirectToLocal(returnUrl);
+                        return RedirectToAction("EditProfile", "Manage");
                     }
                 }
                 AddErrors(result);

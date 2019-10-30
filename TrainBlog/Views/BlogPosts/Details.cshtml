@@ -68,10 +68,10 @@
 									<div class="media-body">
 										@*<a href="#" class="text-custom reply-btn"><i class="mdi mdi-reply"></i>&nbsp; Reply</a>*@
 										<h4 class="media-heading"><a href="">@comment.Author.DisplayName</a></h4>
-										<p class="text-muted post-date">@comment.Created.ToString("MMMM d, yy h:mm tt")</p>
+										<p class="text-muted post-date">@comment.Created.ToString("MMMM d, yyyy h:mm tt")</p>
 											@if (comment.Updated != null)
 											{
-												<p>Edited @comment.Updated.Value.ToString("MMMM d, yy h:mm tt")</p>
+												<p class="text-muted post-date">Edited @comment.Updated.Value.ToString("MMMM d, yyyy h:mm tt")</p>
 											}
 										<p>@comment.Body</p>
 										@if (User.IsInRole("King") || User.Identity.GetUserId() == comment.AuthorId)
@@ -182,23 +182,18 @@
 					</aside>
 
 					<!-- Recent entries widget-->
-					<aside class="widget widget_recent_entries_custom">
+					@*<aside class="widget widget_recent_entries_custom">
 						<div class="widget-title">Recent Posts</div>
 						<ul>
-							<li class="clearfix">
-								<div class="wi"><a href="#"><img src="images/blog/blog-1.jpg" alt="" class="img-fluid"></a></div>
-								<div class="wb"><a href="#">Beautiful Day With Friends..</a> <span class="post-date">Jun 15, 2017</span></div>
-							</li>
-							<li class="clearfix">
-								<div class="wi"><a href="#"><img src="images/blog/blog-2.jpg" alt="" class="img-fluid"></a></div>
-								<div class="wb"><a href="#">Nature valley with cooling..</a> <span class="post-date">Jun 10, 2017</span></div>
-							</li>
-							<li class="clearfix">
-								<div class="wi"><a href="#"><img src="images/blog/blog-3.jpg" alt="" class="img-fluid"></a></div>
-								<div class="wb"><a href="#">15 Best Healthy and Easy Salad..</a> <span class="post-date">Jun 8, 2017</span></div>
-							</li>
+							@foreach (var item in Model)
+							{
+								<li class="clearfix">
+									<div class="wi"><img src="@item.MediaUrl" /></div>
+									<div class="wb"><p>@Html.ActionLink(item.Title, "Details", "BlogPosts", new { slug = item.Slug }, null)</p> <span class="post-date">@item.Created</span></div>
+								</li>
+							}
 						</ul>
-					</aside>
+					</aside>*@
 
 					<!-- Text widget-->
 					@*<aside class="widget">

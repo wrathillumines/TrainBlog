@@ -18,7 +18,7 @@ namespace TrainBlog.Controllers
         private ImageUploadHelper uploadHelper = new ImageUploadHelper();
 
         // GET: BlogPosts
-        //[Authorize(Roles="King")]
+        [Authorize(Roles="King")]
         public ActionResult Index(int? page, string searchStr)
         {
             ViewBag.Search = searchStr;
@@ -58,6 +58,8 @@ namespace TrainBlog.Controllers
             int pageSize = 9;
             int pageNumber = (page ?? 1);
 
+            //return View(db.BlogPosts.Where(b => b.MediaUrl != null).OrderBy(b => Guid.NewGuid()).ToPagedList(pageNumber, pageSize));
+
             return View(db.BlogPosts.Where(b => b.MediaUrl != null).OrderByDescending(b => b.Created).ToPagedList(pageNumber, pageSize));
         }
 
@@ -77,6 +79,7 @@ namespace TrainBlog.Controllers
         }
 
         // GET: BlogPosts/Create
+        [Authorize(Roles = "King")]
         public ActionResult Create()
         {
             return View();
@@ -124,6 +127,7 @@ namespace TrainBlog.Controllers
         }
 
         // GET: BlogPosts/Edit/5
+        [Authorize(Roles = "King")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -163,6 +167,7 @@ namespace TrainBlog.Controllers
         }
 
         // GET: BlogPosts/Delete/5
+        [Authorize(Roles = "King")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -185,7 +190,7 @@ namespace TrainBlog.Controllers
             BlogPost blogPost = db.BlogPosts.Find(id);
             db.BlogPosts.Remove(blogPost);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
 
         protected override void Dispose(bool disposing)

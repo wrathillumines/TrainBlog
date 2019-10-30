@@ -41,13 +41,18 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-6">
+							<div class="col-sm-4">
 								<div class="form-group">
 									<input name="image" type="file" id="fileUpload" class="fileUpload" />
 									<label for="fileUpload" class="btn btn-dark">Add Image</label>
 								</div>
 							</div>
-							<div class="col-sm-6">
+							<div class="col-sm-4">
+								<div class="form-group text-center">
+									@Html.ActionLink("Cancel", "Details", "BlogPosts", new { slug = Model.Slug }, new { @class = "btn btn-dark" })
+								</div>
+							</div>
+							<div class="col-sm-4">
 								<div class="form-group text-right">
 									<input type="submit" class="btn btn-dark" value="Publish" />
 								</div>

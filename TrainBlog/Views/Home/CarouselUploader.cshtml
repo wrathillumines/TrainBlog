@@ -1,0 +1,42 @@
+﻿@model TrainBlog.Models.Carousel
+
+<section class="section">
+	<div class="container">
+
+		<div class="row justify-content-center">
+			<!-- Content-->
+			<div class="col-8">
+
+				<!-- Post-->
+				<article class="post">
+					<h5 class="text-center mt-0 mb-5 pb-3 text-uppercase"><b>Add Image To Home Page Carousel</b></h5>
+
+					@using (Html.BeginForm("CarouselUploader", "Home", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+					{
+						@Html.AntiForgeryToken()
+
+						@Html.ValidationSummary("", new { @class = "text-danger" })
+						<div class="row">
+							<div class="col-sm-6 text-right">
+								<div class="form-group">
+									<input name="image" type="file" id="fileUpload" class="fileUpload" />
+									<label for="fileUpload" class="btn btn-dark">Add Image</label>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<input type="submit" class="btn btn-dark" value="Save" />
+								</div>
+							</div>
+						</div>
+					}
+				</article>
+				<!-- Post end-->
+
+			</div>
+			<!-- Content end-->
+
+		</div>
+
+	</div> <!-- end container -->
+</section>

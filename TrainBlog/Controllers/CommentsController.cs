@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using TrainBlog.Models;
 
@@ -38,6 +35,7 @@ namespace TrainBlog.Controllers
         }
 
         // GET: Comments/Create
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName");
@@ -64,21 +62,8 @@ namespace TrainBlog.Controllers
             return RedirectToAction("Details", "BlogPosts", new { slug = slug });
         }
 
-        //public ActionResult Create([Bind(Include = "Id,BlogPostId,AuthorId,Body,Created,Updated")] Comment comment)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Comments.Add(comment);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", comment.AuthorId);
-        //    ViewBag.BlogPostId = new SelectList(db.BlogPosts, "Id", "Title", comment.BlogPostId);
-        //    return View(comment);
-        //}
-
         // GET: Comments/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -100,20 +85,22 @@ namespace TrainBlog.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,BlogPostId,AuthorId,Body,Created,Updated")] Comment comment)
+        public ActionResult Edit([Bind(Include = "Id,BlogPostId,AuthorId,Body,Created,Updated")] Comment comment, string slug)
         {
             if (ModelState.IsValid)
             {
+                comment.Updated = DateTimeOffset.Now;
                 db.Entry(comment).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", comment.AuthorId);
             ViewBag.BlogPostId = new SelectList(db.BlogPosts, "Id", "Title", comment.BlogPostId);
-            return View(comment);
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Comments/Delete/5
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -136,7 +123,7 @@ namespace TrainBlog.Controllers
             Comment comment = db.Comments.Find(id);
             db.Comments.Remove(comment);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
 
         protected override void Dispose(bool disposing)

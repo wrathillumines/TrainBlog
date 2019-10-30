@@ -1,0 +1,12 @@
+﻿@model IEnumerable<TrainBlog.Models.Carousel>
+
+<section>
+	<div class="main-slider basic-slider">
+		@foreach (var image in ViewBag.Carousel)
+		{
+			<div class="main-slide">
+				<img src="@image.ImageUrl" alt="" />
+			</div>
+		}
+	</div>
+</section>

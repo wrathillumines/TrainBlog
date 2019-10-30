@@ -1,4 +1,7 @@
-﻿@model IEnumerable<TrainBlog.Models.BlogPost>
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<TrainBlog.Models.BlogPost>
 
 <section class="section">
 	<div class="container">
@@ -11,7 +14,7 @@
 						<div class="row">
 							@foreach (var image in Model)
 							{
-								<div id="imageModal" class="modal fade" role="dialog">
+								@*<div id="imageModal" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-lg">
 										<div class="modal-content">
 											<div class="container-fluid">
@@ -23,13 +26,20 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div>*@
 								<div class="col-4">
-									<a href="" data-toggle="modal" data-target="imageModal"><img src="@image.MediaUrl" class="custom-img-fluid rounded" /></a>
+									@*<a href="" data-toggle="modal" data-target="imageModal"><img src="@image.MediaUrl" class="custom-img-fluid rounded" /></a>*@
+									<a href="@image.MediaUrl"><img src="@image.MediaUrl" class="custom-img-fluid rounded" /></a>
+									<br />
+									<br />
 								</div>
 							}
 						</div>
+						<hr />
 					</div>
+					<center>
+						@Html.PagedListPager(Model, page => Url.Action("Gallery", new { page, searchStr = ViewBag.Search }))
+					</center>
 				</article>
 			</div>
 		</div>
