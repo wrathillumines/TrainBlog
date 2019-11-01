@@ -1,0 +1,41 @@
+﻿@model IEnumerable<TrainBlog.Models.Notification>
+
+<section class="section">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 text-center">
+				@using (Html.BeginForm("DeleteAll", "Notifications"))
+				{
+					@Html.AntiForgeryToken()
+					<button type="submit" class="btn btn-dark">Delete All</button>
+				}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 text-center">
+				@foreach (var item in Model)
+				{
+					<article class="post">
+						<div class="text-center post-header">
+							<h2 class="post-title">@Html.ActionLink(item.Subject, "Details", "BlogPosts", new { id = item.Id }, null)</h2>
+							@Html.DisplayFor(modelItem => item.Created)
+						</div>
+						<div class="post-preview text-center">
+							@if (item.Sender.AvatarUrl != null)
+							{
+								<img src="@item.Sender.AvatarUrl" alt="@item.Sender.Email" width="200" />
+							}
+							else
+							{
+								<img src="~/Avatars/nophoto.png" alt="No Profile Photo" width="200" />
+							}
+						</div>
+						<div class="post-content">
+							<p>@Html.DisplayFor(modelItem => item.Body)</p>
+						</div>
+					</article>
+				}
+			</div>
+		</div>
+	</div>
+</section>

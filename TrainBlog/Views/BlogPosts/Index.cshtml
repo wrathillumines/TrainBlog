@@ -1,75 +1,44 @@
-﻿@model IEnumerable<TrainBlog.Models.BlogPost>
+﻿@using PagedList;
+@using PagedList.Mvc;
 
-@{
-    ViewBag.Title = "Index";
-}
+@model IPagedList<TrainBlog.Models.BlogPost>
 
-<h2>Index</h2>
+<section class="section">
+	<div class="container">
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Abstract)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Slug)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Body)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MediaUrl)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Published)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Created)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Updated)
-        </th>
-        <th></th>
-    </tr>
+		<div class="row">
+			<!-- Content-->
+			<div class="col-sm-12 text-center">
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Abstract)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Slug)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Body)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MediaUrl)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Published)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Updated)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+				<!-- Post-->
+				@foreach (var item in Model)
+				{
+					<article class="post">
+						<div class="text-center post-header">
+							<h2 class="post-title">@Html.ActionLink(item.Title, "Details", "BlogPosts", new { slug = item.Slug }, null)</h2>
+							@Html.DisplayFor(modelItem => item.Created)
+						</div>
+						<div class="post-preview text-center">
+							@if (item.MediaUrl != "")
+							{
+								<img src="@item.MediaUrl" alt="" class="img-fluid rounded" />
+							}
+						</div>
+						<div class="post-content">
+							<p>@Html.DisplayFor(modelItem => item.Abstract)</p>
+						</div>
+						<div class="text-center">
+							@Html.ActionLink("Continue Reading", "Details", "BlogPosts", new { slug = item.Slug }, htmlAttributes: new { @class = "btn btn-outline-custom", @role = "button" })
+						</div>
+					</article>
+				}
 
-</table>
+				<!-- Pagination-->
+				<center>
+					@Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchStr = ViewBag.Search }))
+				</center>
+				<!-- Pagination end-->
+			</div>
+		</div>
+	</div>
+</section>

@@ -14,22 +14,15 @@
 						<div class="row">
 							@foreach (var image in Model)
 							{
-								@*<div id="imageModal" class="modal fade" role="dialog">
+								<div id="imageModal-@(image.Id)" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-lg">
 										<div class="modal-content">
-											<div class="container-fluid">
-												<div class="row">
-													<div class="col-12">
-														<img src="@image.MediaUrl" style="width:100%" />
-													</div>
-												</div>
-											</div>
+											<img src="@image.MediaUrl" style="width:100%" />
 										</div>
 									</div>
-								</div>*@
+								</div>
 								<div class="col-4">
-									@*<a href="" data-toggle="modal" data-target="imageModal"><img src="@image.MediaUrl" class="custom-img-fluid rounded" /></a>*@
-									<a href="@image.MediaUrl"><img src="@image.MediaUrl" class="custom-img-fluid rounded" /></a>
+									<a href="" data-toggle="modal" data-target="#imageModal-@(image.Id)"><img src="@image.MediaUrl" class="custom-img-fluid rounded" /></a>
 									<br />
 									<br />
 								</div>

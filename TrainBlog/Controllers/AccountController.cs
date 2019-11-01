@@ -184,8 +184,8 @@ namespace TrainBlog.Controllers
                     MailMessage mailMessage = new MailMessage(emailFrom, model.Email)
                     {
                         Subject = "Confirm your account",
-                        Body = "<p><span style=\"font-family: arial;\">Thank you for registering.</span></p><p><span style=\"font-family: arial;\">Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>.</span></p>",
-                        IsBodyHtml = true
+                        IsBodyHtml = true,
+                        Body = "<h4>Thank you for registering.</h4><p>Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>.</p>"
                     };
 
                     var service = new PersonalEmail();
@@ -233,18 +233,21 @@ namespace TrainBlog.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
-                }
 
-                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                var emailFrom = WebConfigurationManager.AppSettings["emailfrom"];
+                MailMessage mailMessage = new MailMessage(emailFrom, model.Email)
+                {
+                    Subject = "Reset Password",
+                    Body = "<h4>Reset Password</h4><br /><p>Reset your password by clicking <a href=\"" + callbackUrl + "\">here</a></p>.",
+                    IsBodyHtml = true
+                };
+
+                var service = new PersonalEmail();
+                await service.SendAsync(mailMessage);
+
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form

@@ -19,7 +19,6 @@
 						<div class="text-center post-header">
 							<h2 class="post-title">@Html.ActionLink(item.Title, "Details", "BlogPosts", new { slug = item.Slug }, null)</h2>
 							@Html.DisplayFor(modelItem => item.Created)
-							<!-- Html.ActionLink(modelItem => item.Created, "Details", "BlogPosts", new { slug = item.Slug }, null) -->
 						</div>
 						<div class="post-preview text-center">
 							@if (item.MediaUrl != "")

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using Microsoft.AspNet.Identity;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using TrainBlog.Models;
 
@@ -14,11 +11,34 @@ namespace TrainBlog.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Notifications
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteAll()
+        {
+            foreach (var notification in db.Notifications)
+            {
+                db.Notifications.Remove(notification);
+            }
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Index()
         {
-            var notifications = db.Notifications.Include(n => n.Recipient).Include(n => n.Sender);
-            return View(notifications.ToList());
+            var userId = User.Identity.GetUserId();
+            return View("Index", db.Notifications.Where(t => t.RecipientId == userId).ToList().OrderByDescending(t => t.Created));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MarkAsRead(int id)
+        {
+            var notification = db.Notifications.Find(id);
+            notification.HasBeenRead = true;
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Notifications/Details/5

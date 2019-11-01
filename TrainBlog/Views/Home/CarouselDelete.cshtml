@@ -1,0 +1,32 @@
+﻿@model TrainBlog.Models.Carousel
+
+<section class="section">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-8">
+				<article class="post">
+					<h5 class="text-center mt-0 mb-5 pb-3 text-uppercase"><b>Remove Image From Carousel</b></h5>
+					<hr />
+					<p class="text-center">You are about to delete this image. Press the Delete button to confirm.</p>
+					<div class="row">
+						<div class="col-12 text-center">
+							<img src="@Model.ImageUrl" class="custom-img-fluid rounded" />
+						</div>
+					</div>
+					<br />
+					@using (Html.BeginForm())
+					{
+						@Html.AntiForgeryToken()
+						<div class="row">
+							<div class="col-12 text-center">
+								<div class="form-group">
+									<input type="submit" value="Delete" class="btn btn-dark" />
+								</div>
+							</div>
+						</div>
+					}
+				</article>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using TrainBlog.Helpers
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -31,7 +33,7 @@
 <body>
 
 	<div class="logo-box">
-		<a href="index.html">
+		<a href="@Url.Action("Index", "Home")">
 			<img src="~/Images/logo.png" alt="logo" height="64">
 		</a>
 	</div>
@@ -67,6 +69,15 @@
 						<li>
 							<a href="@Url.Action("Create", "BlogPosts")">Create Post</a>
 						</li>
+
+						<li class="has-submenu">
+							<a href="#">Carousel</a>
+							<span class="menu-arrow"></span>
+							<ul class="submenu">
+								<li>@Html.ActionLink("Upload", "CarouselUploader", "Home")</li>
+								<li>@Html.ActionLink("Delete", "ManageCarousel", "Home")</li>
+							</ul>
+						</li>
 					}
 
 					<li>
@@ -91,6 +102,15 @@
 						<ul class="submenu">
 							@if (Request.IsAuthenticated)
 							{
+								<li>@Html.ActionLink("Edit Profile", "EditProfile", "Manage")</li>
+								if (Html.Action("CheckForPassword", "Home").ToString().Length < 6)
+								{
+									<li>@Html.ActionLink("Create Password", "SetPassword", "Manage")</li>
+								}
+								else
+								{
+									<li>@Html.ActionLink("Change Password", "ChangePassword", "Manage")</li>
+								}
 								using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
 								{
 									@Html.AntiForgeryToken()
@@ -104,55 +124,78 @@
 						</ul>
 					</li>
 
-					@*<li class="has-submenu">
-							<a href="#">Features</a>
-							<span class="menu-arrow"></span>
-							<ul class="submenu">
-								<li>
-									<a href="standard-post.html">Standard Post</a>
-								</li>
-								<li>
-									<a href="video-post.html">Video Post</a>
-								</li>
-								<li>
-									<a href="audio-post.html">Audio Post</a>
-								</li>
-								<li>
-									<a href="gallery-post.html">Gallery Post</a>
-								</li>
-								<li>
-									<a href="quote-post.html">Quote Post</a>
-								</li>
-								<li>
-									<a href="link-post.html">Link Post</a>
-								</li>
-								<li>
-									<a href="404.html">Error 404</a>
-								</li>
-							</ul>
-						</li>*@
+					@if (User.IsInRole("King"))
+					{
+						<li class="has-submenu">
+							<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Notifications&nbsp;<span class="badge badge-dark">@NotificationHelper.GetNewUserNotificationCount()</span></a>
+							<ul class="dropdown-menu" style="width:300px">
+								@foreach (var notification in NotificationHelper.GetUnreadUserNotifications())
+								{
+									<li>
+										@using (Html.BeginForm("MarkAsRead", "Notifications"))
+										{
+											@Html.AntiForgeryToken()
+											@Html.Hidden("Id", notification.Id)
 
+											<div class="row">
+												<div class="col-sm-2">
+													<figure class="image">
+														@if (notification.Sender.AvatarUrl != null)
+														{
+															<img src="@notification.Sender.AvatarUrl" alt="@notification.Sender.Email" width="50" />
+														}
+														else
+														{
+															<img src="~/Avatars/nophoto.png" alt="No Profile Photo" width="50" />
+														}
+													</figure>
+												</div>
+												<div class="col-sm-10">
+													<span class="sender">@notification.Sender.DisplayName left a comment:</span>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-12 text-center">
+													<span class="message">@notification.Body</span>
+												</div>
+											</div>
+											<br />
+											<div class="row">
+												<div class="col-sm-12 text-center">
+													<button type="submit" class="btn btn-dark">Mark As Read</button>
+												</div>
+											</div>
+											<hr />
+
+										}
+									</li>
+									<li class="divider" role="separator"></li>
+								}
+
+								<li class="text-center"><a href="/TicketNotifications/Index">All Notifications </a></li>
+							</ul>
+						</li>
+					}
 					<li>
 						<a href="javascript:void(0);" class="toggle-search" data-target="#search-wrap"><i class="mdi mdi-magnify noti-icon"></i></a>
 					</li>
 				</ul>
-				<!-- End navigation menu-->
 			</div>
 		</div>
 	</header>
-	<!-- End Navigation Bar-->
-	<!-- Search input -->
 	<div class="search-wrap" id="search-wrap">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="search-bar">
-						<form>
-							<input class="search-input" type="search" placeholder="Search" />
-						</form>
-						<a href="javascript:void(0);" class="close-search toggle-search" data-target="#search-wrap">
-							<i class="mdi mdi-close-circle"></i>
-						</a>
+						<br />
+						<br />
+						<br />
+						@using (Html.BeginForm("Index", "BlogPosts", FormMethod.Get, htmlAttributes: new { @class = "form" }))
+						{
+							<input id="searchStr" name="searchStr" class="search-input" type="text" placeholder="What are you looking for?" />
+							<button id="searchStr" name="searchStr" class="btn btn-dark" type="submit">Search</button>
+						}
 					</div>
 				</div>
 			</div>
@@ -163,6 +206,7 @@
 
 	<footer>
 		<!-- instagram -->
+		<!-- IG photos are 640x640 -->
 		@*<div class="instagram-footer">
 				<ul class="instagram-footer">
 					<li><a href="#"><img src="~/Images/instagram/1.jpg" alt=""> </a></li>
@@ -194,29 +238,39 @@
 	<script src="~/Scripts/popper.min.js"></script>
 	<script src="~/Scripts/bootstrap.min.js"></script>
 	<script src="~/Scripts/owl.carousel.min.js"></script>
+	<script src="~/Scripts/tinymce/tinymce.min.js"></script>
 	<!--common script for all pages-->
 	<script src="~/Scripts/jquery.app.js"></script>
 
 	<script>
-		//
-		// Modal
-		//
-		//$(function() {
-		//	$('gallery').on('click', function() {
-		//		$('.imagePreview').attr('src', $(this).find('img').attr('src'));
-		//		$('imageModal').modal('show');
-		//	});
-		//});
+		//TinyMCE
+		
+		tinymce.init({
+		  selector: '#createPost',
+		  height: 500,
+		  menubar: false,
+		  plugins: [
+			'advlist lists link charmap preview anchor',
+			'searchreplace visualblocks code fullscreen',
+			'insertdatetime table paste code help wordcount'
+		  ],
+		  toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+		  content_css: [
+			'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+			'//www.tiny.cloud/css/codepen.min.css'
+		  ]
+		});
 
-		//
-		//External logins
-		//
+
+
+		//FB login
+
 		window.fbAsyncInit = function () {
 			FB.init({
-				appId: '{your-app-id}',
+				appId: 'HW Railfanning',
 				cookie: true,
 				xfbml: true,
-				version: '{api-version}'
+				version: '4.0'
 			});
 
 			FB.AppEvents.logPageView();

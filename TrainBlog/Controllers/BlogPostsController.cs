@@ -1,11 +1,15 @@
 ﻿using HunterW_Blog.Utilities;
+using Microsoft.AspNet.Identity.Owin;
 using PagedList;
 using System;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using TrainBlog.Helpers;
 using TrainBlog.Models;
@@ -18,13 +22,12 @@ namespace TrainBlog.Controllers
         private ImageUploadHelper uploadHelper = new ImageUploadHelper();
 
         // GET: BlogPosts
-        [Authorize(Roles="King")]
         public ActionResult Index(int? page, string searchStr)
         {
             ViewBag.Search = searchStr;
             var blogList = IndexSearch(searchStr);
 
-            int pageSize = 3;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
 
             return View(blogList.ToPagedList(pageNumber, pageSize));
@@ -38,6 +41,7 @@ namespace TrainBlog.Controllers
             {
                 result = db.BlogPosts.AsQueryable();
                 result = result.Where(p => p.Title.Contains(searchStr) ||
+                    p.Abstract.Contains(searchStr) ||
                     p.Body.Contains(searchStr) ||
                     p.Comments.Any(c => c.Body.Contains(searchStr) ||
                     c.Author.FirstName.Contains(searchStr) ||
@@ -90,10 +94,11 @@ namespace TrainBlog.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Abstract,Body")] BlogPost blogPost, HttpPostedFileBase image)
+        public async Task<ActionResult> Create([Bind(Include = "Title,Abstract,Body")] BlogPost blogPost, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
+                //Create slug
                 var Slug = StringUtilities.MakeSlug(blogPost.Title);
                 if (string.IsNullOrWhiteSpace(Slug))
                 {
@@ -101,7 +106,7 @@ namespace TrainBlog.Controllers
                     return View(blogPost);
                 }
 
-                //Create slug
+                //Check for duplicate slug
                 if (db.BlogPosts.Any(p => p.Slug == Slug))
                 {
                     ModelState.AddModelError("Title", "Title must be unique.");
@@ -121,6 +126,25 @@ namespace TrainBlog.Controllers
                 blogPost.Created = DateTimeOffset.Now;
                 db.BlogPosts.Add(blogPost);
                 db.SaveChanges();
+
+                //Subscription email
+                if (ModelState.IsValid)
+                {
+                    var subbed = db.Users.Where(u => u.Subscribed == true);
+                    var emailFrom = WebConfigurationManager.AppSettings["emailfrom"];
+                    var emailTo = string.Join(",", subbed.Select(s => s.Email));
+                    MailMessage mailMessage = new MailMessage(emailFrom, emailTo)
+                    {
+                        Subject = "New Blog Post",
+                        IsBodyHtml = true,
+                        Body = "<h4>New Blog Post on HW Railfanning!</h4><br /><p>To view this post, <a href='hwrailfanning.azurewebsites.net'>click here</a> or go to hwrailfanning.azurewebsites.net in your browser.</p><br /><p>Thanks,</p><p>Hunter</p><br /><p><small>You are currently subscribed to email updates. To unsubscribe, please visit the Edit Profile section of the blog site.</small></p>"
+                    };
+
+                    var service = new PersonalEmail();
+                    await service.SendAsync(mailMessage);
+
+                    return RedirectToAction("Posted", "BlogPosts");
+                }
                 return RedirectToAction("Index", "Home");
             }
             return RedirectToAction("Index", "Home");
@@ -191,6 +215,12 @@ namespace TrainBlog.Controllers
             db.BlogPosts.Remove(blogPost);
             db.SaveChanges();
             return RedirectToAction("Index", "Home");
+        }
+
+        //GET: Posted
+        public ActionResult Posted()
+        {
+            return View();
         }
 
         protected override void Dispose(bool disposing)

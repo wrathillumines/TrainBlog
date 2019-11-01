@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using TrainBlog.Helpers;
 using TrainBlog.Models;
 
 namespace TrainBlog.Controllers
@@ -57,6 +58,10 @@ namespace TrainBlog.Controllers
                 comment.Created = DateTimeOffset.Now;
                 db.Comments.Add(comment);
                 db.SaveChanges();
+
+                var notificationHelper = new NotificationHelper();
+                notificationHelper.ManageNotifications(comment);
+
                 return RedirectToAction("Details", "BlogPosts", new { slug = slug });
             }
             return RedirectToAction("Details", "BlogPosts", new { slug = slug });

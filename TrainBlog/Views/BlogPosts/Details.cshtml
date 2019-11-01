@@ -3,12 +3,8 @@
 
 <section class="section">
 	<div class="container">
-
 		<div class="row">
-			<!-- Content-->
 			<div class="col-lg-8">
-
-				<!-- Post-->
 				<article class="post">
 					<div class="text-center post-header">
 						<h2 class="post-title">@Html.DisplayFor(m => m.Title)</h2>
@@ -22,12 +18,21 @@
 					<div class="post-preview text-center">
 						@if (Model.MediaUrl != "")
 						{
-							<img src="@Model.MediaUrl" alt="" class="img-fluid rounded" />
+							<div id="imageModal-@(Model.Id)" class="modal fade" role="dialog">
+								<div class="modal-dialog modal-lg">
+									<div class="modal-content">
+										<img src="@Model.MediaUrl" style="width:100%" />
+									</div>
+								</div>
+							</div>
+							<a href="" data-toggle="modal" data-target="#imageModal-@(Model.Id)">
+								<img src="@Model.MediaUrl" alt="" class="img-fluid rounded" />
+							</a>
 						}
 					</div>
 
 					<div class="blog-detail-description">
-						<p>@Html.DisplayFor(m => m.Body)</p>
+						@Html.Raw(Model.Body)
 
 						@if (User.IsInRole("King"))
 						{
@@ -139,13 +144,7 @@
 						}
 					</div>
 				</article>
-				<!-- Post end-->
-
-
-
 			</div>
-			<!-- Content end-->
-			<!-- Sidebar-->
 			<div class="col-lg-4">
 				<div class="sidebar">
 
@@ -163,7 +162,7 @@
 						<div class="about-widget">
 							<img src="~/Images/aboutmehead.jpg" alt="About Me" class="rounded-circle">
 
-							<p>Quis vero phasellus hac nullam, in quam vitae duis adipiscing mauris leo, laoreet eget at quis, ante vestibulum vivamus vel. Sapien lobortis, eget orci purus amet pede, consectetur neque risus.</p>
+							<p>I'm just a millenial railfan exploring the country with my camera.</p>
 
 							<a href="@Url.Action("About", "Home")" class="btn-read-more mt-2">Read More <i class="mdi mdi-arrow-right"></i></a>
 						</div>
@@ -205,6 +204,5 @@
 			</div>
 			<!-- Sidebar end-->
 		</div>
-
-	</div> <!-- end container -->
+	</div>
 </section>

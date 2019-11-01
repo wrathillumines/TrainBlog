@@ -3,6 +3,7 @@ using PagedList;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
@@ -18,13 +19,21 @@ namespace TrainBlog.Controllers
         ApplicationDbContext db = new ApplicationDbContext();
 
         //
+        // Password Checking Device
+        public ActionResult CheckForPassword()
+        {
+            var userId = User.Identity.GetUserId();
+            var passHash = db.Users.Find(userId).PasswordHash;
+            return Content(passHash);
+        }
+
+        //
         // GET: Index
         public ActionResult Index(int? page)
         {
             int pageSize = 5;
             int pageNumber = (page ?? 1);
-
-            ViewBag.Carousel = db.Carousels.OrderByDescending(c => c.ImageUrl).ToList();
+            ViewBag.Carousel = db.Carousels.OrderBy(c => Guid.NewGuid()).ToList();
 
             return View(db.BlogPosts.OrderByDescending(b => b.Created).ToPagedList(pageNumber, pageSize));
         }
@@ -75,6 +84,43 @@ namespace TrainBlog.Controllers
         public ActionResult UploadFailed()
         {
             return View();
+        }
+
+        //
+        // GET: ManageCarousel
+        [Authorize(Roles = "King")]
+        public ActionResult ManageCarousel()
+        {
+            return View(db.Carousels.OrderByDescending(i => i.Id));
+        }
+
+        //
+        // GET: CarouselDelete
+        [Authorize(Roles = "King")]
+        public ActionResult CarouselDelete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Carousel carousel = db.Carousels.Find(id);
+            if (carousel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(carousel);
+        }
+
+        //
+        // POST: CarouselDelete
+        [HttpPost, ActionName("CarouselDelete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Carousel carousel = db.Carousels.Find(id);
+            db.Carousels.Remove(carousel);
+            db.SaveChanges();
+            return RedirectToAction("Index", "Home");
         }
 
         //
