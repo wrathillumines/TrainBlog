@@ -1,0 +1,17 @@
+﻿@model IEnumerable<TrainBlog.Models.AboutSnippet>
+
+<aside class="widget">
+	<div class="widget-title">About Me</div>
+
+	@foreach (var item in ViewBag.AboutSnippet)
+	{
+	<div class="about-widget">
+		<img src="@item.ImageUrl" alt="About Me" class="rounded-circle">
+
+		<p>@item.Text</p>
+
+		<a href="@Url.Action("About", "Home")" class="btn-read-more mt-2">Read More <i class="mdi mdi-arrow-right"></i></a>
+	</div>
+	}
+
+</aside>

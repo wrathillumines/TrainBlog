@@ -193,6 +193,8 @@
     <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\UserRolesHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\About.cs" />
+    <Compile Include="Models\AboutSnippet.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BlogPost.cs" />
     <Compile Include="Models\Carousel.cs" />
@@ -461,6 +463,9 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Shared\AboutWidgetPartial.cshtml" />
+    <Content Include="Views\Home\AboutSnippetEdit.cshtml" />
+    <Content Include="Views\Home\AboutEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

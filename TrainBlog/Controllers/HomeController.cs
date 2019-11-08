@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using PagedList;
 using System;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -34,8 +35,112 @@ namespace TrainBlog.Controllers
             int pageSize = 5;
             int pageNumber = (page ?? 1);
             ViewBag.Carousel = db.Carousels.OrderBy(c => Guid.NewGuid()).ToList();
+            ViewBag.AboutSnippet = db.AboutSnippets.OrderBy(a => a.Id).ToList();
 
             return View(db.BlogPosts.OrderByDescending(b => b.Created).ToPagedList(pageNumber, pageSize));
+        }
+
+        //
+        // GET: About
+        public ActionResult About()
+        {
+            return View(db.Abouts.FirstOrDefault());
+        }
+
+        //
+        // GET: AboutWidgetPartial
+        //public ActionResult AboutWidgetPartial()
+        //{
+        //    //AboutSnippet aboutSnippet = db.AboutSnippets.FirstOrDefault();
+        //    //var aboutSnippet = db.AboutSnippets.Include(a => a.CreatorId).Include(a => a.ImageUrl).Include(a => a.Text).FirstOrDefault();
+
+        //    return View(db.AboutSnippets.OrderByDescending(a => a.Id).ToList());
+        //}
+
+        //
+        // GET: AboutSnippetEdit
+        [Authorize(Roles = "King")]
+        public ActionResult AboutSnippetEdit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            AboutSnippet aboutSnippet = db.AboutSnippets.Find(id);
+            if (aboutSnippet == null)
+            {
+                return HttpNotFound();
+            }
+            return View(aboutSnippet);
+        }
+
+        //
+        // POST: AboutSnippetEdit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AboutSnippetEdit([Bind(Include = "Id,ImageUrl,Text")] AboutSnippet about, HttpPostedFileBase image)
+        {
+            if (ModelState.IsValid)
+            {
+                var creator = User.Identity.GetUserId();
+
+                about.CreatorId = creator;
+
+                if (ImageUploadHelper.IsWebFriendlyImage(image))
+                {
+                    var ext = Path.GetExtension(image.FileName);
+                    var fileName = Guid.NewGuid() + ext;
+                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    about.ImageUrl = "/Uploads/" + fileName;
+                }
+                db.Entry(about).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        //
+        // GET: AboutEdit
+        [Authorize(Roles = "King")]
+        public ActionResult AboutEdit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            About about = db.Abouts.Find(id);
+            if (about == null)
+            {
+                return HttpNotFound();
+            }
+            return View(about);
+        }
+
+        //
+        // POST: AboutEdit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AboutEdit([Bind(Include = "Id,ImageUrl,Text")] About about, HttpPostedFileBase image)
+        {
+            if (ModelState.IsValid)
+            {
+                var creator = User.Identity.GetUserId();
+
+                about.CreatorId = creator;
+
+                if (ImageUploadHelper.IsWebFriendlyImage(image))
+                {
+                    var ext = Path.GetExtension(image.FileName);
+                    var fileName = Guid.NewGuid() + ext;
+                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    about.ImageUrl = "/Uploads/" + fileName;
+                }
+                db.Entry(about).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -126,13 +231,6 @@ namespace TrainBlog.Controllers
         //
         // GET: PrivacyPolicy
         public ActionResult PrivacyPolicy()
-        {
-            return View();
-        }
-
-        //
-        // GET: About
-        public ActionResult About()
         {
             return View();
         }

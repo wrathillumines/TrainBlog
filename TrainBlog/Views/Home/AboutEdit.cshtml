@@ -1,0 +1,47 @@
+﻿@model TrainBlog.Models.About
+
+<section class="section">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-8">
+				<article class="post">
+					<h5 class="text-center mt-0 mb-5 pb-3 text-uppercase"><b>Edit About Me Snippet</b></h5>
+					<hr />
+					<p class="text-center">Introduce yourself in one sentence.</p>
+					@using (Html.BeginForm("AboutEdit", "Home", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+					{
+						@Html.AntiForgeryToken()
+						@Html.HiddenFor(m => m.Id)
+						@Html.HiddenFor(m => m.CreatorId)
+						@Html.HiddenFor(m => m.ImageUrl)
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									@Html.TextAreaFor(m => m.Text, new { id = "createPost" })
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="form-group">
+									<input name="image" type="file" id="fileUpload" class="fileUpload" />
+									<label for="fileUpload" class="btn btn-dark">Add Image</label>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-group text-center">
+									@Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-dark" })
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-group text-right">
+									<input type="submit" class="btn btn-dark" value="Save" />
+								</div>
+							</div>
+						</div>
+					}
+				</article>
+			</div>
+		</div>
+	</div>
+</section>

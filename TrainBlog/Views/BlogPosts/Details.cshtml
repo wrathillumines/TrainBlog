@@ -156,7 +156,9 @@
 				<div class="sidebar">
 
 					<!-- About widget-->
-					<aside class="widget">
+					@Html.Partial("AboutWidgetPartial", new List<TrainBlog.Models.AboutSnippet>())
+
+					@*<aside class="widget">
 						<div class="widget-title">About Me</div>
 
 						<div class="about-widget">
@@ -166,7 +168,7 @@
 
 							<a href="@Url.Action("About", "Home")" class="btn-read-more mt-2">Read More <i class="mdi mdi-arrow-right"></i></a>
 						</div>
-					</aside>
+					</aside>*@
 
 
 					<!-- Social widget-->

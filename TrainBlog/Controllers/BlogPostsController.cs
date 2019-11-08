@@ -70,6 +70,8 @@ namespace TrainBlog.Controllers
         // GET: BlogPosts/Details/5
         public ActionResult Details(string slug)
         {
+            ViewBag.AboutSnippet = db.AboutSnippets.OrderBy(a => a.Id).ToList();
+
             if (slug == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

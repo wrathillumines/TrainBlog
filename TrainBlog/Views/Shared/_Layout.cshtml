@@ -66,7 +66,19 @@
 
 					@if (User.IsInRole("King"))
 					{
-						<li>
+						<li class="has-submenu">
+							<a href="#">Admin Tools</a>
+							<span class="menu-arrow"></span>
+							<ul class="submenu">
+								<li>@Html.ActionLink("Create Post", "Create", "BlogPosts")</li>
+								<li>@Html.ActionLink("Carousel Upload", "CarouselUploader", "Home")</li>
+								<li>@Html.ActionLink("Carousel Delete", "ManageCarousel", "Home")</li>
+								<li>@Html.ActionLink("Edit About Snippet", "AboutSnippetEdit", "Home", new { id = 1 }, null)</li>
+								<li>@Html.ActionLink("Edit About Me", "AboutEdit", "Home", new { id = 1 }, null)</li>
+							</ul>
+						</li>
+
+						@*<li>
 							<a href="@Url.Action("Create", "BlogPosts")">Create Post</a>
 						</li>
 
@@ -77,7 +89,7 @@
 								<li>@Html.ActionLink("Upload", "CarouselUploader", "Home")</li>
 								<li>@Html.ActionLink("Delete", "ManageCarousel", "Home")</li>
 							</ul>
-						</li>
+						</li>*@
 					}
 
 					<li>
