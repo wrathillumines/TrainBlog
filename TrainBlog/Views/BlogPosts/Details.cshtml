@@ -34,6 +34,13 @@
 					<div class="blog-detail-description">
 						@Html.Raw(Model.Body)
 
+						<hr />
+
+						<!-- Social media share buttons *sometimes* don't show up and I don't know why -->
+
+						<div class="fb-share-button"><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-via="dhunterw" data-show-count="false">Tweet</a></div>
+						<div class="fb-share-button" data-href="https://hwrailfanning.net/Blog/@(Model.Slug)" data-layout="button" data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhwrailfanning.net%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+
 						@if (User.IsInRole("King"))
 						{
 							<hr />
@@ -74,10 +81,10 @@
 										@*<a href="#" class="text-custom reply-btn"><i class="mdi mdi-reply"></i>&nbsp; Reply</a>*@
 										<h4 class="media-heading"><a href="">@comment.Author.DisplayName</a></h4>
 										<p class="text-muted post-date">@comment.Created.ToString("MMMM d, yyyy h:mm tt")</p>
-											@if (comment.Updated != null)
-											{
-												<p class="text-muted post-date">Edited @comment.Updated.Value.ToString("MMMM d, yyyy h:mm tt")</p>
-											}
+										@if (comment.Updated != null)
+										{
+											<p class="text-muted post-date">Edited @comment.Updated.Value.ToString("MMMM d, yyyy h:mm tt")</p>
+										}
 										<p>@comment.Body</p>
 										@if (User.IsInRole("King") || User.Identity.GetUserId() == comment.AuthorId)
 										{
@@ -129,7 +136,7 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<div class="form-group">
-											@Html.TextArea("CommentBody", new { @class = "form-control", rows = 5, placeholder = "Your Message", name = "comment"})
+											@Html.TextArea("CommentBody", new { @class = "form-control", rows = 5, placeholder = "Your Message", name = "comment" })
 										</div>
 									</div>
 								</div>
@@ -148,13 +155,6 @@
 			<div class="col-lg-4">
 				<div class="sidebar">
 
-					<aside class="widget widget_search">
-						<form>
-							<input class="form-control" type="search" placeholder="Search...">
-							<button class="search-button" type="submit"><span class="mdi mdi-magnify"></span></button>
-						</form>
-					</aside>
-
 					<!-- About widget-->
 					<aside class="widget">
 						<div class="widget-title">About Me</div>
@@ -172,37 +172,48 @@
 					<!-- Social widget-->
 					<aside class="widget">
 						<div class="widget-title">Subscribe & Follow</div>
-
+						@if (User.Identity.IsAuthenticated)
+						{
+							<h6 class="text-center"><a href="@Url.Action("EditProfile", "Manage")">Get Email Updates</a></h6>
+						}
+						else
+						{
+							<h6 class="text-center"><a href="@Url.Action("Register", "Account")">Get Email Updates</a></h6>
+						}
+						<hr />
 						<ul class="socials">
 							<li><a href="http://facebook.com/wrathillumines"><i class="mdi mdi-facebook"></i></a></li>
 							<li><a href="http://twitter.com/DHunterW"><i class="mdi mdi-twitter"></i></a></li>
 							<li><a href="http://instagram.com/wrathillumines"><i class="mdi mdi-instagram"></i></a></li>
 						</ul>
+						<hr />
+						<h6 class="text-center"><a href="railpictures.net/hwphotog">Hunter On RailPictures.net</a></h6>
 					</aside>
 
 					<!-- Recent entries widget-->
 					@*<aside class="widget widget_recent_entries_custom">
-						<div class="widget-title">Recent Posts</div>
-						<ul>
-							@foreach (var item in Model)
-							{
-								<li class="clearfix">
-									<div class="wi"><img src="@item.MediaUrl" /></div>
-									<div class="wb"><p>@Html.ActionLink(item.Title, "Details", "BlogPosts", new { slug = item.Slug }, null)</p> <span class="post-date">@item.Created</span></div>
-								</li>
-							}
-						</ul>
-					</aside>*@
+							<div class="widget-title">Recent Posts</div>
+							<ul>
+								@foreach (var item in Model)
+								{
+									<li class="clearfix">
+										<div class="wi"><img src="@item.MediaUrl" /></div>
+										<div class="wb"><p>@Html.ActionLink(item.Title, "Details", "BlogPosts", new { slug = item.Slug }, null)</p> <span class="post-date">@item.Created</span></div>
+									</li>
+								}
+							</ul>
+						</aside>*@
 
 					<!-- Text widget-->
 					@*<aside class="widget">
-						<div class="widget-title">Text Widget</div>
+							<div class="widget-title">Text Widget</div>
 
-						<p class="text-muted text-widget-des">Exercitation photo booth stumptown tote bag Banksy, elit small batch freegan sed. Craft beer elit seitan exercitation, photo booth et 8-bit kale chips proident chillwave deep v laborum. Aliquip veniam delectus, Marfa eiusmod Pinterest in do umami readymade swag. </p>
-					</aside>*@
+							<p class="text-muted text-widget-des">Exercitation photo booth stumptown tote bag Banksy, elit small batch freegan sed. Craft beer elit seitan exercitation, photo booth et 8-bit kale chips proident chillwave deep v laborum. Aliquip veniam delectus, Marfa eiusmod Pinterest in do umami readymade swag. </p>
+						</aside>*@
 				</div>
 			</div>
 			<!-- Sidebar end-->
 		</div>
 	</div>
 </section>
+

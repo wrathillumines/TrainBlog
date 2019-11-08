@@ -137,7 +137,7 @@ namespace TrainBlog.Controllers
                     {
                         Subject = "New Blog Post",
                         IsBodyHtml = true,
-                        Body = "<h4>New Blog Post on HW Railfanning!</h4><br /><p>To view this post, <a href='hwrailfanning.azurewebsites.net'>click here</a> or go to hwrailfanning.azurewebsites.net in your browser.</p><br /><p>Thanks,</p><p>Hunter</p><br /><p><small>You are currently subscribed to email updates. To unsubscribe, please visit the Edit Profile section of the blog site.</small></p>"
+                        Body = "<h4>New Blog Post on HW Railfanning!</h4><br /><p>To view this post, <a href='hwrailfanning.net'>click here</a> or go to hwrailfanning.net in your browser.</p><br /><p>Thanks,</p><p>Hunter</p><br /><p><small>You are currently subscribed to email updates. To unsubscribe, please visit the Edit Profile section of the blog site.</small></p>"
                     };
 
                     var service = new PersonalEmail();

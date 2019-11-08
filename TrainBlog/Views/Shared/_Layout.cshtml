@@ -239,26 +239,30 @@
 	<script src="~/Scripts/bootstrap.min.js"></script>
 	<script src="~/Scripts/owl.carousel.min.js"></script>
 	<script src="~/Scripts/tinymce/tinymce.min.js"></script>
+	<div id="fb-root"></div>
+	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v5.0&appId=3106707349404160&autoLogAppEvents=1"></script>
+	<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 	<!--common script for all pages-->
 	<script src="~/Scripts/jquery.app.js"></script>
 
 	<script>
 		//TinyMCE
-		
+
 		tinymce.init({
-		  selector: '#createPost',
-		  height: 500,
-		  menubar: false,
-		  plugins: [
-			'advlist lists link charmap preview anchor',
-			'searchreplace visualblocks code fullscreen',
-			'insertdatetime table paste code help wordcount'
-		  ],
-		  toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-		  content_css: [
-			'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-			'//www.tiny.cloud/css/codepen.min.css'
-		  ]
+			selector: '#createPost',
+			height: 500,
+			menubar: false,
+			plugins: [
+				'advlist lists link charmap preview anchor',
+				'searchreplace visualblocks code fullscreen',
+				'insertdatetime table paste code help wordcount'
+			],
+			toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+			content_css: [
+				'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+				'//www.tiny.cloud/css/codepen.min.css'
+			]
 		});
 
 

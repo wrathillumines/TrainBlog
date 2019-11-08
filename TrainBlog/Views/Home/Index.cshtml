@@ -27,7 +27,7 @@
 							}
 						</div>
 						<div class="post-content">
-							<p>@Html.DisplayFor(modelItem => item.Abstract)</p>
+							<p class="text-center">@Html.DisplayFor(modelItem => item.Abstract)</p>
 						</div>
 						<div class="text-center">
 							@Html.ActionLink("Continue Reading", "Details", "BlogPosts", new { slug = item.Slug }, htmlAttributes: new { @class = "btn btn-outline-custom", @role = "button" })
@@ -55,7 +55,7 @@
 
 							<p>I'm just a millenial railfan exploring the country with my camera.</p>
 
-							<a href="#" class="btn-read-more mt-2">Read More <i class="mdi mdi-arrow-right"></i></a>
+							<a href="@Url.Action("About", "Home")" class="btn-read-more mt-2">Read More <i class="mdi mdi-arrow-right"></i></a>
 						</div>
 					</aside>
 
@@ -63,12 +63,22 @@
 					<!-- Social widget-->
 					<aside class="widget">
 						<div class="widget-title">Subscribe & Follow</div>
-
+						@if (User.Identity.IsAuthenticated)
+						{
+							<h6 class="text-center"><a href="@Url.Action("EditProfile", "Manage")">Get Email Updates</a></h6>
+						}
+						else
+						{
+							<h6 class="text-center"><a href="@Url.Action("Register", "Account")">Get Email Updates</a></h6>
+						}
+						<hr />
 						<ul class="socials">
 							<li><a href="http://facebook.com/wrathillumines"><i class="mdi mdi-facebook"></i></a></li>
 							<li><a href="http://twitter.com/DHunterW"><i class="mdi mdi-twitter"></i></a></li>
 							<li><a href="http://instagram.com/wrathillumines"><i class="mdi mdi-instagram"></i></a></li>
 						</ul>
+						<hr />
+						<h6 class="text-center"><a href="http://railpictures.net/hwphotog">Hunter On RailPictures.net</a></h6>
 					</aside>
 
 					<!-- Text widget-->

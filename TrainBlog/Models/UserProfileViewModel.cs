@@ -33,7 +33,7 @@ namespace TrainBlog.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Display(Name = "Subscribed")]
+        [Display(Name = "Subscribe to email updates?")]
         public bool Subscribed { get; set; }
 
         public HttpPostedFileBase Avatar { get; set; }
