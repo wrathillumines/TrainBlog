@@ -48,16 +48,6 @@ namespace TrainBlog.Controllers
         }
 
         //
-        // GET: AboutWidgetPartial
-        //public ActionResult AboutWidgetPartial()
-        //{
-        //    //AboutSnippet aboutSnippet = db.AboutSnippets.FirstOrDefault();
-        //    //var aboutSnippet = db.AboutSnippets.Include(a => a.CreatorId).Include(a => a.ImageUrl).Include(a => a.Text).FirstOrDefault();
-
-        //    return View(db.AboutSnippets.OrderByDescending(a => a.Id).ToList());
-        //}
-
-        //
         // GET: AboutSnippetEdit
         [Authorize(Roles = "King")]
         public ActionResult AboutSnippetEdit(int? id)
