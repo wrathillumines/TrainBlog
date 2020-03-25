@@ -11,6 +11,7 @@ namespace TrainBlog.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // Delete All Notifications
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteAll()
@@ -24,12 +25,14 @@ namespace TrainBlog.Controllers
             return RedirectToAction("Index");
         }
 
+        // Get All Notifications
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
             return View("Index", db.Notifications.Where(t => t.RecipientId == userId).ToList().OrderByDescending(t => t.Created));
         }
 
+        // Mark notifications as read
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult MarkAsRead(int id)

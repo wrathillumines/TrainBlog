@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TrainBlog.Models;
 
-namespace HunterW_BugTracker.Helpers
+namespace TrainBlog.Helpers
 {
     public class UserRolesHelper
     {

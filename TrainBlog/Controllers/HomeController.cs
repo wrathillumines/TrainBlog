@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using PagedList;
 using System;
 using System.Data.Entity;
@@ -18,6 +19,21 @@ namespace TrainBlog.Controllers
     public class HomeController : Controller
     {
         ApplicationDbContext db = new ApplicationDbContext();
+
+        //
+        // reCAPTCHA
+        /// <summary>  
+        /// Validate Captcha  
+        /// </summary>  
+        /// <param name="response"></param>  
+        /// <returns></returns> 
+        public static Captcha ValidateCaptcha(string response)
+        {
+            string secret = System.Web.Configuration.WebConfigurationManager.AppSettings["recaptchaPrivateKey"];
+            var client = new WebClient();
+            var jsonResult = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secret, response));
+            return JsonConvert.DeserializeObject<Captcha>(jsonResult.ToString());
+        }
 
         //
         // Password Checking Device
@@ -238,7 +254,9 @@ namespace TrainBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Contact(EmailModel model)
         {
-            if (ModelState.IsValid)
+            Captcha response = ValidateCaptcha(Request["g-recaptcha-response"]);
+
+            if (response.Success && ModelState.IsValid)
             {
                 try
                 {
@@ -262,7 +280,14 @@ namespace TrainBlog.Controllers
                     await Task.FromResult(0);
                 }
             }
-            return View(model);
+            return RedirectToAction("Whoops");
+        }
+
+        //
+        // GET: Whoops
+        public ActionResult Whoops()
+        {
+            return View();
         }
 
         //

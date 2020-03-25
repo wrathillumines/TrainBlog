@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using System.Web;
 using TrainBlog.Enumerations;
-using HunterW_BugTracker.Helpers;
 
 namespace TrainBlog.Helpers
 {

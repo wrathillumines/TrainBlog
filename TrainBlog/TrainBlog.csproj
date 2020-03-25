@@ -197,6 +197,7 @@
     <Compile Include="Models\AboutSnippet.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BlogPost.cs" />
+    <Compile Include="Models\Captcha.cs" />
     <Compile Include="Models\Carousel.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\EmailModel.cs" />
@@ -466,6 +467,7 @@
     <Content Include="Views\Shared\AboutWidgetPartial.cshtml" />
     <Content Include="Views\Home\AboutSnippetEdit.cshtml" />
     <Content Include="Views\Home\AboutEdit.cshtml" />
+    <Content Include="Views\Home\Whoops.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
