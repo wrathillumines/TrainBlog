@@ -14,15 +14,8 @@
 						<div class="row">
 							@foreach (var image in Model)
 							{
-								<div id="imageModal-@(image.Id)" class="modal fade" role="dialog">
-									<div class="modal-dialog modal-lg">
-										<div class="modal-content">
-											<img src="@image.MediaUrl" style="width:100%" />
-										</div>
-									</div>
-								</div>
 								<div class="col-4">
-									<a href="" data-toggle="modal" data-target="#imageModal-@(image.Id)"><img src="@image.MediaUrl" class="custom-img-fluid rounded" /></a>
+									<a href="@image.MediaUrl" class="swipebox"><img src="@image.MediaUrl" alt="" class="custom-img-fluid rounded" /></a>
 									<br />
 									<br />
 								</div>
@@ -38,3 +31,15 @@
 		</div>
 	</div>
 </section>
+
+<script src="https://code.jquery.com/jquery-2.2.4.js"
+		integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+		crossorigin="anonymous"></script>
+<script src="~/Scripts/jquery.swipebox.js"></script>
+<script type="text/javascript">
+	; (function ($) {
+
+		$('.swipebox').swipebox();
+
+	})(jQuery);
+</script>

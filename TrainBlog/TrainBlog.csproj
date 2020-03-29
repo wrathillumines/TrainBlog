@@ -47,6 +47,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ImageResizer, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ImageResizer.4.2.5\lib\net45\ImageResizer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -224,12 +227,16 @@
     <Content Include="Content\owl-carousel.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\style.css" />
+    <Content Include="Content\swipebox.css" />
     <Content Include="favicon.ico" />
     <Content Include="Fonts\materialdesignicons-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\aboutme.jpg" />
     <Content Include="Images\favicon.ico" />
+    <Content Include="Images\icons.png" />
+    <Content Include="Images\icons.svg" />
+    <Content Include="Images\loader.gif" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\aboutmehead.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -268,6 +275,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.app.js" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.swipebox.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
