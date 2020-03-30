@@ -18,14 +18,7 @@
 					<div class="post-preview text-center">
 						@if (Model.MediaUrl != "")
 						{
-							<div id="imageModal-@(Model.Id)" class="modal fade" role="dialog">
-								<div class="modal-dialog modal-lg">
-									<div class="modal-content">
-										<img src="@Model.MediaUrl" style="width:100%" />
-									</div>
-								</div>
-							</div>
-							<a href="" data-toggle="modal" data-target="#imageModal-@(Model.Id)">
+							<a href="@Model.MediaUrl" class="swipebox">
 								<img src="@Model.MediaUrl" alt="" class="img-fluid rounded" />
 							</a>
 						}
@@ -159,16 +152,16 @@
 					@Html.Partial("AboutWidgetPartial", new List<TrainBlog.Models.AboutSnippet>())
 
 					@*<aside class="widget">
-						<div class="widget-title">About Me</div>
+							<div class="widget-title">About Me</div>
 
-						<div class="about-widget">
-							<img src="~/Images/aboutmehead.jpg" alt="About Me" class="rounded-circle">
+							<div class="about-widget">
+								<img src="~/Images/aboutmehead.jpg" alt="About Me" class="rounded-circle">
 
-							<p>I'm just a millenial railfan exploring the country with my camera.</p>
+								<p>I'm just a millenial railfan exploring the country with my camera.</p>
 
-							<a href="@Url.Action("About", "Home")" class="btn-read-more mt-2">Read More <i class="mdi mdi-arrow-right"></i></a>
-						</div>
-					</aside>*@
+								<a href="@Url.Action("About", "Home")" class="btn-read-more mt-2">Read More <i class="mdi mdi-arrow-right"></i></a>
+							</div>
+						</aside>*@
 
 
 					<!-- Social widget-->
@@ -219,3 +212,14 @@
 	</div>
 </section>
 
+<script src="https://code.jquery.com/jquery-2.2.4.js"
+		integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+		crossorigin="anonymous"></script>
+<script src="~/Scripts/jquery.swipebox.js"></script>
+<script type="text/javascript">
+	; (function ($) {
+
+		$('.swipebox').swipebox();
+
+	})(jQuery);
+</script>
