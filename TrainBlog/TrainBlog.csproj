@@ -47,6 +47,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataTables.AspNet.Core, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DataTables.AspNet.Core.2.0.2\lib\net45\DataTables.AspNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DataTables.AspNet.Mvc5, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DataTables.AspNet.Mvc5.2.0.2\lib\net45\DataTables.AspNet.Mvc5.dll</HintPath>
+    </Reference>
     <Reference Include="ImageResizer, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ImageResizer.4.2.5\lib\net45\ImageResizer.dll</HintPath>
     </Reference>
@@ -223,6 +229,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
+    <Content Include="Content\jquery.dataTables.css" />
     <Content Include="Content\materialdesignicons.min.css" />
     <Content Include="Content\owl-carousel.css" />
     <Content Include="Content\PagedList.css" />
@@ -274,6 +281,7 @@
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.app.js" />
+    <Content Include="Scripts\jquery.dataTables.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\jquery.swipebox.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -476,6 +484,7 @@
     <Content Include="Views\Home\AboutSnippetEdit.cshtml" />
     <Content Include="Views\Home\AboutEdit.cshtml" />
     <Content Include="Views\Home\Whoops.cshtml" />
+    <Content Include="Views\Home\MemberList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -235,6 +235,14 @@ namespace TrainBlog.Controllers
         }
 
         //
+        // GET: MemberList
+        //[Authorize(Roles = "King")]
+        public ActionResult MemberList()
+        {
+            return View(db.Users.OrderByDescending(u => u.LastName).ToList());
+        }
+
+        //
         // GET: PrivacyPolicy
         public ActionResult PrivacyPolicy()
         {
